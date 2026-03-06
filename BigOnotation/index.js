@@ -27,9 +27,9 @@
 // const arr = Array.from({ length: 5 }).map((_, i) => i);
 // console.log(arr);
 
-const range = (start, stop, step) =>
-  Array.from({ length: Math.ceil(stop - start / step) }).map(
-    (_, i) => start + i * step,
-  );
+// const range = (start, stop, step) =>
+//   Array.from({ length: Math.ceil(stop - start / step) }).map(
+//     (_, i) => start + i * step,
+//   );
 
-console.log(range(1, 20, 2));
+// console.log(range(1, 20, 2));
