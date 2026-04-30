@@ -79,7 +79,7 @@ const users = [
 
 // console.log(filterActiveUsers(users));
 
-//* Problem 6
+//* Problem 6 -> SOLVED
 
 interface Book {
   title: string;
@@ -101,4 +101,15 @@ const myBook: Book = {
   isAvailable: true,
 };
 
-printBookDetails(myBook);
+// printBookDetails(myBook);
+
+//* Problem 7
+
+const getUniqueValues = (arr1: unknown[], arr2: unknown[]) => {
+  // const mergeArr = [...arr1, ...arr2];
+  // return mergeArr;
+  return "hello";
+};
+const array1 = [1, 2, 3, 4, 5];
+const array2 = [3, 4, 5, 6, 7];
+console.log(getUniqueValues(array1, array2));
