@@ -5,6 +5,7 @@ const port = 5000;
 import path from "path";
 import dotenv from "dotenv";
 dotenv.config({ path: path.join(process.cwd(), ".env") });
+
 //parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -15,6 +16,7 @@ const pool = new Pool({
 });
 
 const initDB = async () => {
+  //USERS TABLE
   await pool.query(`
     CREATE TABLE IF NOT EXISTS users(
       id SERIAL PRIMARY KEY,
@@ -49,9 +51,23 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello Next Level Developers");
 });
 
-app.post("/", (req: Request, res: Response) => {
-  console.log(req.body);
-  res.status(200).json({ success: true, message: "API is working" });
+app.post("/users", async (req: Request, res: Response) => {
+  const { name, age, email, phone, address } = req.body;
+  try {
+    const result = await pool.query(
+      `
+      INSERT INTO users (name, age, email, phone, address)
+      VALUES ($1, $2, $3, $4, $5)  RETURNING *`,
+      [name, age, email, phone, address],
+    );
+    return res.status(201).json({
+      success: false,
+      message: "Data inserted successfully",
+      data: result.rows[0],
+    });
+  } catch (error: any) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
 });
 
 app.listen(port, () => {
