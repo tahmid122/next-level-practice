@@ -105,6 +105,31 @@ app.get("/users/:userId", async (req: Request, res: Response) => {
   }
 });
 
+//update user
+app.put("/users/:userId", async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  const { name, age, email, phone, address } = req.body;
+
+  try {
+    const result = await pool.query(
+      `
+      UPDATE users SET name=$1, age=$2, phone=$3, address=$4
+      WHERE id=$5 RETURNING *
+      `,
+      [name, age, phone, address, userId],
+    );
+    return res
+      .status(201)
+      .json({
+        success: true,
+        message: "User updated successfully",
+        data: result.rows[0],
+      });
+  } catch (error: any) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
