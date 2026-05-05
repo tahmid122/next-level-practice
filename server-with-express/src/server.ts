@@ -51,6 +51,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello Next Level Developers");
 });
 
+// create users
 app.post("/users", async (req: Request, res: Response) => {
   const { name, age, email, phone, address } = req.body;
   try {
@@ -67,6 +68,40 @@ app.post("/users", async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     return res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+//get all users
+app.get("/users", async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`SELECT * FROM users`);
+    return res.status(200).json({
+      success: true,
+      message: "Users fetched successfully",
+      data: result.rows,
+    });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error?.message });
+  }
+});
+
+//get single user
+app.get("/users/:userId", async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  try {
+    const result = await pool.query(
+      `
+        SELECT * FROM users WHERE id=$1
+      `,
+      [userId],
+    );
+    return res.status(200).json({
+      success: true,
+      message: result.rowCount ? "Get single user successful" : "NO user found",
+      data: result.rows[0] || {},
+    });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.message });
   }
 });
 
