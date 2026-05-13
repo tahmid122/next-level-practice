@@ -33,4 +33,18 @@ const updateUser = async (id: string, name: string) => {
   );
 };
 
-export const userServices = { createUser, getUsers, getSingleUser, updateUser };
+const deleteUser = async (id: string) => {
+  return await pool.query(
+    `
+        DELETE FROM users WHERE id=$1 RETURNING *
+        `,
+    [id],
+  );
+};
+export const userServices = {
+  createUser,
+  getUsers,
+  getSingleUser,
+  updateUser,
+  deleteUser,
+};
