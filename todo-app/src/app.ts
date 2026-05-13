@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import config from "./config";
 import { initDB } from "./config/db";
 import { userRoutes } from "./modules/user/user.routes";
+import { todoRoutes } from "./modules/todo/todo.routes";
 const app = express();
 const PORT = config.port;
 
@@ -13,6 +14,8 @@ initDB();
 
 // user operations
 app.use("/users", userRoutes);
+//todos operations
+app.use("/todos", todoRoutes);
 
 // default
 app.get("/", (req, res) => {

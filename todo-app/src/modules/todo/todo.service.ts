@@ -1,0 +1,16 @@
+import { pool } from "../../config/db";
+
+const createTodo = async (
+  user_id: number,
+  title: string,
+  description: string,
+) => {
+  return await pool.query(
+    `
+        INSERT INTO todos(user_id, title, description) VALUES ($1 ,$2, $3) RETURNING *
+    `,
+    [user_id, title, description],
+  );
+};
+
+export const todoServices = { createTodo };
