@@ -12,5 +12,12 @@ const createTodo = async (
     [user_id, title, description],
   );
 };
-
-export const todoServices = { createTodo };
+const getAllTodos = async (user_id: string) => {
+  return await pool.query(
+    `
+    SELECT * FROM todos WHERE user_id=$1
+    `,
+    [user_id],
+  );
+};
+export const todoServices = { createTodo, getAllTodos };

@@ -14,5 +14,24 @@ const createTodo = async (req: Request, res: Response) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
-
-export const todoControllers = { createTodo };
+const getAllTodos = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const result = await todoServices.getAllTodos(id as string);
+    if (result.rows.length === 0) {
+      return res
+        .status(200)
+        .json({ success: true, message: "No todo found", data: [] });
+    }
+    return res
+      .status(200)
+      .json({
+        success: true,
+        message: "Todos fetched successfully",
+        data: result.rows,
+      });
+  } catch (error: any) {
+    return res.status(500).json({ success: true, message: error?.message });
+  }
+};
+export const todoControllers = { createTodo, getAllTodos };
