@@ -20,4 +20,16 @@ const getAllTodos = async (user_id: string) => {
     [user_id],
   );
 };
-export const todoServices = { createTodo, getAllTodos };
+const updateTodo = async (
+  user_id: string,
+  title: string,
+  description: string,
+) => {
+  return await pool.query(
+    `
+    UPDATE todos SET title=$1, description=$2 WHERE user_id=$3 RETURNING *
+    `,
+    [title, description, user_id],
+  );
+};
+export const todoServices = { createTodo, getAllTodos, updateTodo };
