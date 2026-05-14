@@ -35,9 +35,10 @@ const getAllTodos = async (req: Request, res: Response) => {
 const updateTodo = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { title, description } = req.body;
+    const { title, description, user_id } = req.body;
     const result = await todoServices.updateTodo(
       id as string,
+      user_id,
       title,
       description,
     );
@@ -53,5 +54,26 @@ const updateTodo = async (req: Request, res: Response) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
-
-export const todoControllers = { createTodo, getAllTodos, updateTodo };
+const deleteTodo = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { user_id } = req.body;
+    const result = await todoServices.deleteTodo(user_id, id as string);
+    if (result.rows.length == 0) {
+      return res
+        .status(200)
+        .json({ success: false, message: "Failed to delete" });
+    }
+    return res
+      .status(200)
+      .json({ success: true, message: "Todo deleted", data: result.rows[0] });
+  } catch (error: any) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+export const todoControllers = {
+  createTodo,
+  getAllTodos,
+  updateTodo,
+  deleteTodo,
+};
