@@ -71,9 +71,32 @@ const deleteTodo = async (req: Request, res: Response) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+const toggleStatus = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { user_id } = req.body;
+    const result = await todoServices.toggleStatus(user_id, id as string);
+    if (result.rows.length > 0) {
+      return res.status(201).json({
+        success: true,
+        message: "Todo status updated",
+        data: result.rows[0],
+      });
+    } else {
+      return res.status(200).json({
+        success: false,
+        message: "Failed to update",
+        data: {},
+      });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
 export const todoControllers = {
   createTodo,
   getAllTodos,
   updateTodo,
   deleteTodo,
+  toggleStatus,
 };

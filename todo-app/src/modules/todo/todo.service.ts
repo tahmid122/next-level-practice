@@ -41,4 +41,18 @@ const deleteTodo = async (user_id: string, todo_id: string) => {
     [user_id, todo_id],
   );
 };
-export const todoServices = { createTodo, getAllTodos, updateTodo, deleteTodo };
+const toggleStatus = async (user_id: string, todo_id: string) => {
+  return await pool.query(
+    `
+    UPDATE todos SET iscompleted= NOT iscompleted WHERE user_id=$1 AND id=$2 RETURNING *
+    `,
+    [user_id, todo_id],
+  );
+};
+export const todoServices = {
+  createTodo,
+  getAllTodos,
+  updateTodo,
+  deleteTodo,
+  toggleStatus,
+};
