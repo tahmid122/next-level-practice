@@ -6,8 +6,8 @@ const router = Router();
 
 //-> /users
 router.post("/", userControllers.createUser);
-router.get("/", auth(), userControllers.getUsers);
-router.get("/:id", userControllers.getSingleUser);
+router.get("/", auth("admin"), userControllers.getUsers);
+router.get("/:id", auth("admin", "user"), userControllers.getSingleUser);
 router.patch("/:id", userControllers.updateUserById);
 router.delete("/:id", userControllers.deleteUser);
 
